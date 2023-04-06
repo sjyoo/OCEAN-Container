@@ -12,6 +12,7 @@ RUN apt-get update \
         gnuplot \
         openmpi-doc \
         openmpi-bin \
+	python3-pip \
 	pkg-config \
         libopenmpi-dev \
         openssl \
@@ -38,16 +39,6 @@ ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM 1
 
 WORKDIR /usr/local/src
 
-## Python installation
-RUN curl https://www.python.org/ftp/python/3.9.4/Python-3.9.4.tgz -O -L \
-    && tar zxf Python-3.9.4.tgz \
-    && rm -rf Python-3.9.4.tgz \
-    && cd Python-3.9.4 \
-    && ./configure \
-    && make \
-    && make altinstall \
-    && ln -s /usr/local/bin/python3.9 /usr/local/bin/python \
-    && ln -s /usr/local/bin/pip3.9 /usr/local/bin/pip
 ENV PYTHONIOENCODING "utf-8"
 RUN pip install pip -U \
     && pip install \
@@ -71,7 +62,6 @@ RUN cd qe-6.8 \
     && ./configure \
     && make all \
     && make install
-COPY res/environment_variables ./qe-6.8
 RUN cp /usr/local/bin/p?.x /usr/bin 
 
 
@@ -88,14 +78,3 @@ RUN cd OCEAN-3.0.3 \
 RUN mkdir -p /work
 
 WORKDIR /work
-
-## Pseudo-potential preparation
-#COPY res/pslibrary.1.0.0.tar.bz2 ./
-#RUN tar jxvf pslibrary.1.0.0.tar.bz2 \
-#    && rm -rf pslibrary.1.0.0.tar.bz2
-#
-#RUN curl http://www.quantum-simulation.org/potentials/sg15_oncv/sg15_oncv_upf_2020-02-06.tar.gz -O -L
-#RUN mkdir sg15_oncv_upf \
-#    && tar xvf sg15_oncv_upf_2020-02-06.tar.gz -C sg15_oncv_upf \
-#    && rm -rf sg15_oncv_upf_2020-02-06.tar.gz
-
