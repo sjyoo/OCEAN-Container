@@ -3,7 +3,7 @@ FC = gfortran
 MPIFORT = mpif90
 
 # Flags for the fortran compiler
-OPTIONS = -O2 -cpp -DBLAS -DMPI -D__OLD_MPI  -fallow-argument-mismatch
+OPTIONS = -O2 -cpp -DBLAS -DMPI -D__OLD_MPI  -fallow-argument-mismatch -ffree-line-length-0
 
 # FFTW path. Several programs can use FFTW. Find it at fftw.org. 
 #  (There is a fallback fft so FFTW is not required)
