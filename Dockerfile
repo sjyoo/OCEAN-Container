@@ -54,12 +54,31 @@ RUN pip install pip -U \
         Cython \
         fire
 
+## libxc installation
+RUN curl https://gitlab.com/libxc/libxc/-/archive/4.3.4/libxc-4.3.4.tar.gz -O -L
+RUN tar xvfz libxc-4.3.4.tar.gz \
+    && rm -rf libxc-4.3.4.tar.gz 
+RUN cd libxc-4.3.4 \
+    && autoreconf --install \
+    && ./configure --prefix=/usr/local \
+    && make all \
+    && make install
+
+## ONCV PSP installation
+RUN curl https://github.com/jtv3/oncvpsp/archive/refs/tags/4.tar.gz -O -L
+RUN tar xvfz 4.tar.gz \
+    && rm -rf 4.tar.gz
+COPY make.inc /usr/local/src/oncvpsp-4/
+RUN cd oncvpsp-4 \
+    && make \
+    && cp src/*.x /usr/local/bin
+
 ## Quantum espresso installation
 RUN curl https://github.com/QEF/q-e/releases/download/qe-6.8/qe-6.8-ReleasePack.tgz -O -L
-RUN tar xvf qe-6.8-ReleasePack.tgz \
+RUN tar xvfz qe-6.8-ReleasePack.tgz \
     && rm -rf qe-6.8-ReleasePack.tgz
 RUN cd qe-6.8 \
-    && ./configure \
+    && ./configure --with-libxc --with-libxc-prefix=/usr/local \
     && make all \
     && make install
 RUN cp /usr/local/bin/p?.x /usr/bin 
