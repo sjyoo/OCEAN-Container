@@ -86,11 +86,11 @@ RUN cp /usr/local/bin/p?.x /usr/bin
 
 ## Ocean installation
 WORKDIR /usr/local/src
-RUN curl https://github.com/times-software/OCEAN/archive/refs/tags/v3.0.3.tar.gz -O -L
-RUN tar xvf v3.0.3.tar.gz \
-    && rm -rf v3.0.3.tar.gz 
-COPY Makefile* /usr/local/src/OCEAN-3.0.3/
-RUN cd OCEAN-3.0.3 \
+RUN curl https://github.com/times-software/OCEAN/archive/refs/tags/v3.0.0.tar.gz -O -L
+RUN tar xvf v3.0.0.tar.gz \
+    && rm -rf v3.0.0.tar.gz 
+COPY Makefile* /usr/local/src/OCEAN-3.0.0/
+RUN cd OCEAN-3.0.0 \
     && make all \
     && make install
 
